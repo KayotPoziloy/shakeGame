@@ -34,6 +34,10 @@ public class GameField extends JPanel implements ActionListener {
      */
     private Image apple;
     /**
+     * Картинка клетки поля
+     */
+    private Image field;
+    /**
      * Координата яблока по X и Y
      */
     private int appleX;
@@ -82,6 +86,8 @@ public class GameField extends JPanel implements ActionListener {
         apple = imageIconApple.getImage();
         ImageIcon imageIconDot = new ImageIcon("C:\\Users\\yakho\\OneDrive\\Рабочий стол\\shakeGame\\src\\main\\java\\org\\example\\snake.png");
         dot = imageIconDot.getImage();
+        ImageIcon imageIconField = new ImageIcon("C:\\Users\\yakho\\OneDrive\\Рабочий стол\\shakeGame\\src\\main\\java\\org\\example\\field.png");
+        field = imageIconField.getImage();
     }
 
     /**
@@ -91,10 +97,10 @@ public class GameField extends JPanel implements ActionListener {
         dots = 3; // Начальное количество точек
         // Начальное значение координат
         for (int i = 0; i < dots; i++) {
-            x[i] = 48 - i*DOT_SIZE;
-            y[i] = 48;
+            x[i] = DOT_SIZE*3 - i*DOT_SIZE;
+            y[i] = DOT_SIZE;
         }
-        timer = new Timer(250, this);
+        timer = new Timer(100, this);
         timer.start();
         createApple();
     }
@@ -107,22 +113,34 @@ public class GameField extends JPanel implements ActionListener {
         appleY = new Random().nextInt(20)*DOT_SIZE;
     }
 
+    /**
+     * Отрисовка компонентов поля
+     * @param g the <code>Graphics</code> object to protect
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        for (int i = 0; i < SIZE + DOT_SIZE; i += DOT_SIZE) {
+            for (int j = 0; j < SIZE + DOT_SIZE; j += DOT_SIZE) {
+                g.drawImage(field, i, j, this);
+            }
+        }
         if (inGame) {
             g.drawImage(apple, appleX, appleY, this);
             for (int i = 0; i < dots; i++) {
                 g.drawImage(dot, x[i], y[i], this);
             }
         } else {
+            Font font = new Font("Arial", Font.BOLD, 32);
+            g.setFont(font);
             String gameOver = "Конец";
-            g.setColor(Color.BLUE);
-            g.drawString(gameOver, SIZE/2, SIZE/2);
+            String hahaha = "ХАХАХАХ";
+            g.setColor(Color.BLACK);
+            g.drawString(gameOver, SIZE/2 - 50, SIZE/2);
+            g.drawString(hahaha, SIZE/2 - 70, SIZE/2 + 50);
         }
         g.drawLine(SIZE + DOT_SIZE, 0, SIZE + DOT_SIZE,  SIZE + DOT_SIZE);
         g.drawLine(0, SIZE + DOT_SIZE, SIZE + DOT_SIZE, SIZE + DOT_SIZE);
-
     }
 
     /**
